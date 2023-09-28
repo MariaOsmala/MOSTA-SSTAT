@@ -2,15 +2,22 @@
 #SBATCH --job-name=SSTAT
 #SBATCH --output=outs/SSTAT_%A_%a.txt
 #SBATCH --error=errs/SSTAT_%A_%a.txt
-#SBATCH --account=project_2006203
+#SBATCH --account=project_2007567
 #SBATCH --partition=small
 #SBATCH --time=06:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=1G
-#SBATCH --array=701-990
-#TIMEOUT
-#32,39,41,43-45,48,52,64,82-83,93-96,100-103,107-108,126,130-131,155-156,158-159,196-198,201,219-220,222,228,248,249
+#SBATCH --gres=nvme:20 
+#SBATCH --array=418,770,842,849,873,877,897,898,924,925,975,976,984,989,994 
+
+#sacct -j 17389178 -o state%20,jobid%20 | grep FAILED 418
+#sacct -j 17389381 -o state%20,jobid%20 | grep FAILED 770
+#sacct -j 17389583 -o state%20,jobid%20 | grep FAILED 
+
+
+
+
 
 
 #One can have only 300 scripts submitted

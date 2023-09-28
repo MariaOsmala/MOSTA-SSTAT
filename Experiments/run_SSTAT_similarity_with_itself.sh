@@ -1,7 +1,7 @@
 #!/bin/bash -l
-#SBATCH --job-name=SSTAT
-#SBATCH --output=outs/SSTAT_%A_%a.txt
-#SBATCH --error=errs/SSTAT_%A_%a.txt
+#SBATCH --job-name=SSTAT_itself
+#SBATCH --output=outs/SSTAT_itself_%A_%a.txt
+#SBATCH --error=errs/SSTAT_itself_%A_%a.txt
 #SBATCH --account=project_2006203
 #SBATCH --partition=small
 #SBATCH --time=06:00:00

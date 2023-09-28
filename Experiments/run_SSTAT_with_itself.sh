@@ -2,14 +2,16 @@
 array=$1 #3982 calculations
 
 
-cd /scratch/project_2006203/MOSTA-SSTAT/Experiments
+cd /projappl/project_2006203/MOSTA-SSTAT/Experiments
 # cd csc_scratch/motifsimilarity-private/experiments/
+
+results_path=/scratch/project_2006203/MOSTA-SSTAT
 
 #FOXO1 FOXK1 esimerkki 624389
 
 start_ind=0
-end_ind=3982
-
+#end_ind=3982
+end_ind=3294
 
 
 for (( index=$start_ind; index<$end_ind; index++ )); do
@@ -25,8 +27,8 @@ echo "j: "$j
 #index=j+i*(i-1)/2
 
 
-filenames=( $(cut -d ',' -f1 ../../TFBS/Results/tomtom/tomtom/filenames.csv ) )
-
+#filenames=( $(cut -d ',' -f1 ../../TFBS/Results/tomtom/tomtom/filenames.csv ) )
+filenames=( $(cut -d ',' -f1 ../../TFBS/PWMs_final/filenames.csv ) )
 length=${#filenames[@]}
 TF_PATH=../../TFBS/
 TF1=${filenames[$i]}
@@ -37,8 +39,8 @@ TF1="${TF1/pwms/transfac}"
 TF2="${TF2/pwms/transfac}"
 
 #Yimengs motifs
-TF1="${TF1/pfm_from_newData/transfac}"
-TF2="${TF2/pfm_from_newData/transfac}"
+#TF1="${TF1/pfm_from_newData/transfac}"
+#TF2="${TF2/pfm_from_newData/transfac}"
 
 
 #The .pfm files  need to be tab separated, if it is already tab separated do nothing
@@ -52,8 +54,8 @@ echo $TF2
 #head -n 1 $TF_PATH$TF1 | awk '{print NF}'
 #10
 #head -n 1 $TF_PATH$TF2 | awk '{print NF}'
-
-motifnames=( $(cut -d ',' -f1 ../../TFBS/Results/tomtom/tomtom/motifnames.csv ) )
+motifnames=( $(cut -d ',' -f1 ../../TFBS/PWMs_final/motifnames.csv ) )
+#motifnames=( $(cut -d ',' -f1 ../../TFBS/Results/tomtom/tomtom/motifnames.csv ) )
 
 PWM1=${motifnames[$i]}
 PWM2=${motifnames[$j]}
@@ -70,27 +72,27 @@ PWM2=${motifnames[$j]}
 
 #If you use > instead of >>, you will overwrite destfile rather than add to it.
 
-echo "../../TFBS/"$TF1 > ../data/$PWM1"_"$PWM2".list"
-echo "../../TFBS/"$TF2 >> ../data/$PWM1"_"$PWM2".list"
+echo "../../TFBS/"$TF1 > $results_path/data/$PWM1"_"$PWM2".list"
+echo "../../TFBS/"$TF2 >> $results_path/data/$PWM1"_"$PWM2".list"
 
 if [[ $index -eq $start_ind ]]
 then
      echo $index is equal to start
      #echo $PWM1"-"$PWM2 > "../results/result_"$array".out"
 
-     ../sstat .5 list:../data/$PWM1"_"$PWM2".list" typeI 0.01 > "../results/result_with_itself.out"
+     ../sstat .5 list:$results_path/data/$PWM1"_"$PWM2".list" typeI 0.01 > $results_path"/results_final/result_with_itself.out"
 
 
 
 else
      echo $index is greater then start
      #echo $PWM1"-"$PWM2 >> "../results/result_"$array".out"
-     ../sstat .5 list:../data/$PWM1"_"$PWM2".list" typeI 0.01 >> "../results/result_with_itself.out"
+     ../sstat .5 list:$results_path/data/$PWM1"_"$PWM2".list" typeI 0.01 >> $results_path"/results_final/result_with_itself.out"
 
 
 fi
 
-rm ../data/$PWM1"_"$PWM2".list"
+rm $results_path/data/$PWM1"_"$PWM2".list"
 
 
 done
