@@ -1,5 +1,5 @@
 #!/bin/bash
-array=$1 #this varies between 0 and 102
+array=$1 #this varies between 0 and 393
 
 
 cd /projappl/project_2006203/MOSTA-SSTAT/Experiments
@@ -7,35 +7,38 @@ cd /projappl/project_2006203/MOSTA-SSTAT/Experiments
 
 results_path=/scratch/project_2006203/MOSTA-SSTAT
 mkdir $results_path
-mkdir $results_path"/results_true_vs_corresponding_artificial"
+mkdir $results_path"/results_true_vs_corresponding_artificial_version2.2"
 
-readarray -t representatives < /projappl/project_2006203/TFBS/PWMs_final/representatives.csv
+readarray -t motifs < /projappl/project_2006203/TFBS/PWMs_final_version2.2/motifnames.csv
 
-filenames=( $(cut -d ',' -f1 ../../TFBS/PWMs_final/filenames.csv ) ) #These are the full filenames of all motifs
+#filenames=( $(cut -d ',' -f1 ../../TFBS/PWMs_final/filenames.csv ) ) #These are the full filenames of all motifs
+
+filenames=( $(cut -d ',' -f1 ../../TFBS/PWMs_final_version2.2/filenames_similarity_computations.csv ) ) #These are the full filenames of all motifs
 
 
 start_ind=$(($array*10)) 
 end_ind=$((($array+1)*10 ))
 
-if [ "$end_ind" -gt 1031 ]; then
+if [ "$end_ind" -gt 3933 ]; then
    
-   end_ind=1031
+   end_ind=3933
 fi
 
 write_new_file=1
+search_dir="/scratch/project_2006203/TFBS/PWMs_final_version2.2/artificial_motifs_transfac"
 
 for (( index=$start_ind; index<$end_ind; index++ )); do
 
- true_motif=${representatives[$index]}".pfm"
+ true_motif=${motifs[$index]}".pfm"
  
  true_motif_file=$(printf "%s\n" "${filenames[@]}" | grep "$true_motif")
   
- search_dir="/scratch/project_2006203/TFBS/artificial_motifs/artificial_motifs_transfac"
+ 
 
   # Empty array to hold the resulting files
   artificial_files=()
 
-  true_motif=${representatives[$index]}
+  true_motif=${motifs[$index]}
 
   # For each prefix/lines use glob to get files and add them to the result array
   for file in "$search_dir/$true_motif"*; do
@@ -101,5 +104,5 @@ for (( index=$start_ind; index<$end_ind; index++ )); do
 done #Loop over index
   
 cd $LOCAL_SCRATCH
-cp "result_"$array".out" $results_path"/results_true_vs_corresponding_artificial/"
+cp "result_"$array".out" $results_path"/results_true_vs_corresponding_artificial_version2.2/"
 
